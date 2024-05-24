@@ -3,6 +3,7 @@ import './aboutUs.css';
 
 import { about } from '../../data';
 import Divider from '../divider/Divider';
+import Partners from '../partners/Partners';
 
 const AboutUs = () => {
     return (
@@ -28,6 +29,8 @@ const AboutUs = () => {
                         </div>
                     ))}
                 </div>
+
+                <Partners />
             </div>
         </section>
     );
