@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './funFacts.css';
 
 import Odometer from "react-odometerjs";
@@ -6,13 +6,21 @@ import Odometer from "react-odometerjs";
 import { FaAward, FaDiagramProject, FaUsersLine } from 'react-icons/fa6';
 import { GiTeamIdea } from 'react-icons/gi';
 
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import ScrollTrigger from 'gsap/dist/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
 const FunFacts = () => {
     const [clients, setClients] = useState(0);
     const [projects, setProjects] = useState(0);
     const [team, setTeam] = useState(0);
     const [awards, setAwards] = useState(0);
 
-    useEffect(() => {
+    const container = useRef(null);
+
+    const updateData = () => {
         const timeId = setTimeout(() => {
             setClients(120);
             setProjects(150);
@@ -23,10 +31,33 @@ const FunFacts = () => {
         return () => {
             clearTimeout(timeId);
         }
-    }, []);
+    };
+
+    const reset = () => {
+        setClients(0);
+        setProjects(0);
+        setTeam(0);
+        setAwards(0);
+    };
+
+    useGSAP(() => {
+        const timeline = gsap.timeline({
+            scrollTrigger: {
+                trigger: container.current,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 4,
+                onEnter: updateData,
+                onLeaveBack: reset
+
+            }
+        });
+
+        return () => timeline.revert();
+    }, { scope: container });
 
     return (
-        <div className='fun__facts blur-effect'>
+        <div className='fun__facts blur-effect' ref={container}>
             <div className="container">
                 <div className="fact">
                     <div className="icon__container">

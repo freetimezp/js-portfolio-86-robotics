@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './header.css';
 
 import { Link } from 'react-scroll';
@@ -8,9 +8,29 @@ import { robot } from "../../assets";
 import StarBackground from '../starbackground/StarBackground';
 import Divider from '../divider/Divider';
 
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import ScrollTrigger from 'gsap/dist/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
+
 const Header = () => {
+    const container = useRef(null);
+
+    useGSAP(() => {
+        const timeline = gsap.timeline({ delay: 1 });
+
+        timeline
+            .fromTo(".header__image", { scale: .5, opacity: 0 }, { scale: 1, opacity: 1 })
+            .from(".sub__title", { opacity: 0, y: -30 })
+            .from(".divider", { opacity: 0, x: -30 })
+            .from(".title", { opacity: 0, scale: 200 })
+            .from(".description", { opacity: 0 })
+            .from(".buttons__container", { x: -30, opacity: 0 })
+    }, { scope: container });
+
     return (
-        <header className='header'>
+        <header className='header' ref={container}>
             <StarBackground>
                 <div className="header__row">
                     <div className="column">

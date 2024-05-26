@@ -27,6 +27,7 @@
     position: relative;
     transition: var(--transition);
     margin: auto;
+    opacity: 0;
 }
 
 .header .header__row .header__image:hover {
